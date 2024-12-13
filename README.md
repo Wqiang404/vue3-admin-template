@@ -12,7 +12,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/stepui/stepin-template)
 ![Docs by iczer](https://img.shields.io/badge/docs%20by-iczer-green)
 
-![preview](./docs/images/preview.png) 
+![preview](./docs/images/preview.png)
 
 </div>
 
@@ -31,14 +31,16 @@
 - 丰富的内置业务组件和常用页面模板
 
 ## 浏览器支持
+
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Opera |
-| --- | --- | --- | --- | --- |
-| last 2 versions | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| last 2 versions                                                                                                                                                                                       | last 2 versions                                                                                                                                                                                                   | last 2 versions                                                                                                                                                                                               | last 2 versions                                                                                                                                                                                               | last 2 versions                                                                                                                                                                                           |
+
 ## 环境要求
 
-|git|node|yarn|
-|---|----|----|
-|`^2.15.0`|`^16.14.0`|`^1.21.1`|
+| git       | node       | yarn      |
+| --------- | ---------- | --------- |
+| `^2.15.0` | `^16.14.0` | `^1.21.1` |
 
 ## 使用
 
@@ -75,9 +77,9 @@ yarn dev
 - 提交 [Pull Request](https://github.com/stepui/stepin-template/pulls) 改进 Stepin Template 的代码。
 - 加入社群，与小伙伴们一同交流心得。QQ 群：441231578
 
-## 打赏作者
+<!-- ## 打赏作者
 如果该项目对您有所帮助，可以请作者喝一杯咖啡。
 <p>
   <img src="./docs/images/alipay.png" width="320px" style="display: inline-block; border-radius: 8px;" />
   <img src="./docs/images/wechatpay.png" width="320px" style="display: inline-block; margin-left: 24px; border-radius: 8px;" />
-</p>
+</p> -->
