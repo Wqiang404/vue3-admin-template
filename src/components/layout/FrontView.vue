@@ -4,13 +4,13 @@
   import { ThemeProvider, alert } from 'stepin';
 
   onMounted(() => {
-    alert.info(
-      `<div class="text-text">
-        Stepin is a fast, light framework to Vue3 – try it out today with the
-        <span class="underline">Stepin Template Beta</span>.
-      </div>`,
-      { renderRaw: true, duration: -1 }
-    );
+    // alert.info(
+    //   `<div class="text-text">
+    //     Stepin is a fast, light framework to Vue3 – try it out today with the
+    //     <span class="underline">Stepin Template Beta</span>.
+    //   </div>`,
+    //   { renderRaw: true, duration: -1 }
+    // );
   });
 
   const navList = [
@@ -64,6 +64,7 @@
             <div
               :class="`front-nav-item flex items-center cursor-pointer mx-base ${nav.children ? 'with-list' : ''}`"
               v-for="nav in navList"
+              :key="nav.title"
             >
               <template v-if="!nav.children">
                 {{ nav.title }}
@@ -74,11 +75,12 @@
                 </div>
                 <template #content>
                   <div class="flex">
-                    <div class="not-[:first-child]:ml-lg" v-for="group in nav.children">
+                    <div class="not-[:first-child]:ml-lg" v-for="group in nav.children" :key="group.title">
                       <h3>{{ group.title }}</h3>
                       <div
                         class="cursor-pointer hover:text-text text-subtext font-light py-xs text-lg"
                         v-for="item in group.list"
+                        :key="item"
                       >
                         {{ item }}
                       </div>

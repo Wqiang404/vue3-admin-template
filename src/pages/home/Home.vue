@@ -10,7 +10,7 @@
 <template>
   <div class="home text-center flex flex-col justify-center">
     <div class="transform w-full">
-      <div class="tracking-wide slogan text-[3.5rem] xl:text-[5.25rem] font-extralight">
+      <!-- <div class="tracking-wide slogan text-[3.5rem] xl:text-[5.25rem] font-extralight">
         <span class="font-semibold">Develop faster.</span> Custom easier.
       </div>
       <p class="text-subtext text-[1.5rem] xl:text-[1.75rem] font-extralight tracking-wide">
@@ -43,7 +43,7 @@
           <img class="w-5" src="@/assets/vite.svg" />
           vitejs
         </a>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

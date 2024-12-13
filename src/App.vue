@@ -2,8 +2,8 @@
   <a-config-provider :getPopupContainer="getPopupContainer">
     <ThemeProvider is-root v-bind="themeConfig" :apply-style="false">
       <stepin-view
-        system-name="Stepin"
-        logo-src="@/assets/vite.svg"
+        system-name="FICC 数智平台"
+        logo-src="@/assets/menu_logo_blue.svg"
         :class="`${contentClass}`"
         :user="user"
         :navMode="navigation"
@@ -34,7 +34,7 @@
   import { reactive, ref } from 'vue';
   import { useRouter } from 'vue-router';
   import { useAccountStore, useMenuStore, useSettingStore, storeToRefs } from '@/store';
-  import avatar from '@/assets/avatar.png';
+  import avatar from '@/assets/kunkun.png';
   import { PageFooter, HeaderActions } from '@/components/layout';
   import Setting from './components/setting';
   import { LoginModal } from '@/pages/login';
@@ -48,6 +48,7 @@
   profile().then((response) => {
     const { account } = response;
     user.name = account.username;
+    user.name = 'test';
     // user.avatar = account.avatar;
   });
 
@@ -63,7 +64,7 @@
     name: 'admin',
     avatar: avatar,
     menuList: [
-      { title: '个人中心', key: 'personal', icon: 'UserOutlined', onClick: () => router.push('/profile') },
+      // { title: '个人中心', key: 'personal', icon: 'UserOutlined', onClick: () => router.push('/profile') },
       { title: '设置', key: 'setting', icon: 'SettingOutlined', onClick: () => (showSetting.value = true) },
       { type: 'divider' },
       {

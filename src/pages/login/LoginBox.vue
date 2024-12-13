@@ -7,7 +7,7 @@
         @finish="login"
         class="login-form w-[400px] p-lg xl:w-[440px] xl:p-xl h-fit text-text"
       >
-        <div class="third-platform">
+        <!-- <div class="third-platform">
           <div class="third-title mb-md text-lg">第三方登录：</div>
           <div class="third-list flex text-[28px]">
             <WechatOutlined class="icon wechat flex-1 cursor-pointer text-gray-400 hover:text-green-600" />
@@ -15,7 +15,7 @@
             <QqOutlined class="icon qq flex-1 cursor-pointer text-gray-400 hover:text-red-600" />
           </div>
         </div>
-        <a-divider>Or</a-divider>
+        <a-divider>Or</a-divider> -->
         <a-form-item :required="true" name="username">
           <a-input
             v-model:value="form.username"
