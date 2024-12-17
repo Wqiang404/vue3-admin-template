@@ -3,7 +3,7 @@
     <ThemeProvider is-root v-bind="themeConfig" :apply-style="false">
       <stepin-view
         system-name="FICC 数智平台"
-        logo-src="@/assets/menu_logo_blue.svg"
+        logo-src="@/assets/menu_logo_light.svg"
         :class="`${contentClass}`"
         :user="user"
         :navMode="navigation"
@@ -115,6 +115,9 @@
     margin: 0;
     height: 100vh;
     overflow-y: hidden;
+    .stepin-alert-message-info {
+      background-color: aqua;
+    }
   }
   .stepin-img-checkbox {
     @apply transition-transform;

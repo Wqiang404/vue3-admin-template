@@ -1,13 +1,15 @@
 #stepin-app {
   .stepin-view {
     .stepin-layout-content .stepin-view-main {
+      @apply pt-2;
       // transition: all 0.25s ease-in;
       // .stepin-tabs-view-content {
       //   @apply pr-0 mr-0;
       // }
-      // .stepin-tabs-view-content-main {
-      //   transition: all 0.25s ease-in;
-      // }
+      .stepin-tabs-view-content-main {
+        //   transition: all 0.25s ease-in;
+        @apply bg-transparent p-0;
+      }
     }
     &.unbounded {
       // .stepin-tabs-view .ant-tabs-top .ant-tabs-nav {
@@ -29,4 +31,20 @@
       }
     }
   }
+  .stepin-tabs-view .ant-tabs-card .ant-tabs-nav .ant-tabs-tab.ant-tabs-tab-active,
+  .stepin-tabs-view .ant-tabs-card div .ant-tabs-nav .ant-tabs-tab.ant-tabs-tab-active {
+    background-color: var(--ant-primary-color);
+    .stepin-tabs-view-head-item {
+      @apply text-white;
+    }
+    // .stepin-tabs-view-head .close {
+    //   color: var(--color-subtext);
+    // }
+  }
+  // .stepin-tabs-view-head-title.deactvie {
+  //   color: var(--color-subtext);
+  // }
+  // .stepin-tabs-view-head .close {
+  //   color: var(--color-subtext);
+  // }
 }

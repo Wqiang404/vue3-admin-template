@@ -50,6 +50,6 @@
 <style scoped lang="less">
   .home {
     min-height: max(100vh, 600px);
-    margin-top: -78px;
+    // margin-top: -78px;
   }
 </style>

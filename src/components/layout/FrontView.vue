@@ -6,8 +6,7 @@
   onMounted(() => {
     // alert.info(
     //   `<div class="text-text">
-    //     Stepin is a fast, light framework to Vue3 – try it out today with the
-    //     <span class="underline">Stepin Template Beta</span>.
+    //     new FICC 数智平台
     //   </div>`,
     //   { renderRaw: true, duration: -1 }
     // );
@@ -52,7 +51,7 @@
   <ThemeProvider :color="{ middle: { 'bg-base': '#003f8c' }, primary: { DEFAULT: '#1896ff' } }" :autoAdapt="false">
     <div class="front-view flex flex-col">
       <div class="text-text flex-1">
-        <div class="front-header flex items-baseline py-md px-xl">
+        <!-- <div class="front-header flex items-baseline py-md px-xl">
           <router-link to="/home" class="text-xxl text-text hover:text-text">
             <img src="@/assets/vite.svg" />
             Stepin
@@ -104,7 +103,7 @@
               >Get Started</a-button
             >
           </div>
-        </div>
+        </div> -->
         <div class="front-content px-xl">
           <router-view />
         </div>

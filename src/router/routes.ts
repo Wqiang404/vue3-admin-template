@@ -7,10 +7,21 @@ const routes: RouteRecordRaw[] = [
     meta: {
       icon: 'BarsOutlined',
       // target: '_blank',
-      cacheable: false,
+      cacheable: true,
       renderMenu: true,
     },
     component: () => import('@/pages/demo/index'),
+  },
+  {
+    path: '/demo1',
+    name: '示范页面1',
+    meta: {
+      icon: 'BarsOutlined',
+      // target: '_blank',
+      cacheable: true,
+      renderMenu: true,
+    },
+    component: () => import('@/pages/demo1/index'),
   },
   {
     path: '/login',
@@ -43,35 +54,35 @@ const routes: RouteRecordRaw[] = [
     },
     component: () => import('@/pages/home'),
   },
-  // {
-  //   path: '/front',
-  //   name: '前端',
-  //   meta: {
-  //     renderMenu: false,
-  //   },
-  //   component: () => import('@/components/layout/FrontView.vue'),
-  //   children: [
-  //     {
-  //       path: '/login',
-  //       name: '登录',
-  //       meta: {
-  //         icon: 'LoginOutlined',
-  //         view: 'blank',
-  //         target: '_blank',
-  //         cacheable: false,
-  //       },
-  //       component: () => import('@/pages/login'),
-  //     },
-  //     {
-  //       path: '/home',
-  //       name: '首页',
-  //       meta: {
-  //         view: 'blank',
-  //       },
-  //       component: () => import('@/pages/home'),
-  //     },
-  //   ],
-  // },
+  {
+    path: '/front',
+    name: '前端',
+    meta: {
+      renderMenu: false,
+    },
+    component: () => import('@/components/layout/FrontView.vue'),
+    children: [
+      {
+        path: '/login',
+        name: '登录',
+        meta: {
+          icon: 'LoginOutlined',
+          view: 'blank',
+          target: '_blank',
+          cacheable: false,
+        },
+        component: () => import('@/pages/login'),
+      },
+      // {
+      //   path: '/home',
+      //   name: '首页',
+      //   meta: {
+      //     view: 'blank',
+      //   },
+      //   component: () => import('@/pages/home'),
+      // },
+    ],
+  },
   {
     path: '/403',
     name: '403',

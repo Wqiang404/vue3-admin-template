@@ -6,7 +6,7 @@ const presetList = [
   //   name: 'workplace',
   //   title: '工作台',
   //   icon: 'DashboardOutlined',
-  //   badge: 'new',
+  //   badge: '',
   //   target: '_self',
   //   path: '/workplace',
   //   component: '@/pages/workplace',
@@ -114,7 +114,7 @@ function getMenuList() {
   let menuList = [];
   if (!menuStr) {
     menuList = presetList;
-    localStorage.setItem('stepin-menu', JSON.stringify(menuList));
+    // localStorage.setItem('stepin-menu', JSON.stringify(menuList));
   } else {
     menuList = JSON.parse(menuStr);
   }

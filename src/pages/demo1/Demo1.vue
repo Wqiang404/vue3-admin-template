@@ -1,6 +1,6 @@
 <template>
   <!-- <ThemeProvider :color="{ middle: { 'bg-base': '#fff' } }"> -->
-  <div ref="demo" class="demo grid grid-rows-none gap-4 mt-xxs">
+  <div ref="demo1" class="demo grid grid-rows-none gap-4 mt-xxs">
     <arco-table :columns="columns" :data="data" :pagination="false"></arco-table>
   </div>
   <!-- </ThemeProvider> -->
@@ -72,6 +72,6 @@
 </script>
 
 <style scoped lang="less">
-  .demo {
+  .demo1 {
   }
 </style>
