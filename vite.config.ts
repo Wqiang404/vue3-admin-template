@@ -1,8 +1,10 @@
 import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
+import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
+import { ArcoResolver } from 'unplugin-vue-components/resolvers';
 import { AntdvLessPlugin, AntdvModifyVars } from 'stepin/lib/style/plugins';
 
 const timestamp = new Date().getTime();
@@ -66,8 +68,16 @@ export default ({ command, mode }) => {
           },
         },
       }),
+      AutoImport({
+        imports: ['vue', 'vue-router'], // 自动引入 Vue 和 Vue Router 的 API
+        resolvers: [ArcoResolver()],
+        dts: 'auto-imports.d.ts', // 生成类型声明文件
+      }),
       Components({
-        resolvers: [AntDesignVueResolver({ importStyle: mode === 'development' ? false : 'less' })],
+        resolvers: [
+          AntDesignVueResolver({ importStyle: mode === 'development' ? false : 'less' }),
+          ArcoResolver({ sideEffect: true }),
+        ],
       }),
     ],
     css: {

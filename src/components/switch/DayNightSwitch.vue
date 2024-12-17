@@ -36,8 +36,12 @@
       if (val.color.middle['bg-base'] !== props.nightColor) {
         cachedMiddleColors = cloneDeep(val.color.middle);
         _value.value = 'day';
+        // arco-design 恢复亮色主题
+        document.body.removeAttribute('arco-theme');
       } else {
         _value.value = 'night';
+        // arco-design 设置为暗黑主题
+        document.body.setAttribute('arco-theme', 'dark');
       }
     },
     { deep: true }
