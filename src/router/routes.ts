@@ -11,6 +11,20 @@ const routes: RouteRecordRaw[] = [
       renderMenu: true,
     },
     component: () => import('@/pages/demo/index'),
+    // children: [
+    //   {
+    //     path: '/demo1',
+    //     name: '示范页面1',
+    //     meta: {
+    //       icon: 'BarsOutlined',
+    //       // view: 'blank',
+    //       target: '_self',
+    //       cacheable: false,
+    //       renderMenu: true,
+    //     },
+    //     component: () => import('@/pages/demo1/index'),
+    //   },
+    // ],
   },
   {
     path: '/demo1',

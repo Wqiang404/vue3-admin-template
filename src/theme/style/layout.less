@@ -1,5 +1,8 @@
 #stepin-app {
   .stepin-view {
+    .stepin-tabs-view-head-cache.enable {
+      @apply hidden;
+    }
     .stepin-layout-content .stepin-view-main {
       @apply pt-2;
       // transition: all 0.25s ease-in;
@@ -8,8 +11,11 @@
       // }
       .stepin-tabs-view-content-main {
         //   transition: all 0.25s ease-in;
-        @apply bg-transparent p-0;
+        @apply bg-transparent p-0 flex-none;
       }
+      // .stepin-tabs-view-content {
+      //   @apply min-h-0;
+      // }
     }
     &.unbounded {
       // .stepin-tabs-view .ant-tabs-top .ant-tabs-nav {
