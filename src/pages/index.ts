@@ -1,6 +1,7 @@
 import { Component, DefineComponent } from 'vue';
 
 type LazyComponent = () => Promise<Component | DefineComponent>;
+// import.meta.glob 是 Vite 提供的一个功能，用于动态导入文件。
 const modules: Record<string, LazyComponent> = import.meta.glob('./**/*.{ts,vue,tsx}');
 
 type DynamicModule = { [key: string]: LazyComponent };

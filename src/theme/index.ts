@@ -46,60 +46,60 @@ export const themeList: Theme.ThemeConfig[] = [
     imgUrl: HeaderDarkImg,
     config: { color: { middle: { 'bg-base': '#fff', 'bg-header': '#001129' } } },
   },
-  {
-    title: 'VSCode风',
-    key: 'vscode',
-    imgUrl: VscodeImg,
-    config: {
-      color: { middle: { 'bg-base': '#23272E' } },
-    },
-  },
-  {
-    title: 'IDEA风',
-    key: 'idea',
-    imgUrl: IdeaImg,
-    config: {
-      color: { middle: { 'bg-base': '#2B2B2B' } },
-    },
-  },
-  {
-    title: '墨绿风',
-    key: 'green',
-    imgUrl: GreenImg,
-    config: {
-      color: { middle: { 'bg-base': '#013a54' } },
-    },
-  },
-  {
-    title: '芭比粉',
-    key: 'pink',
-    imgUrl: PinkImg,
-    config: {
-      color: { middle: { 'bg-base': '#B6266D' } },
-    },
-  },
-  {
-    title: '暗夜紫',
-    key: 'purple',
-    imgUrl: PurpleImg,
-    config: {
-      color: { middle: { 'bg-base': '#361F68' } },
-    },
-  },
-  {
-    title: '中国红',
-    key: 'china',
-    imgUrl: ChinaRedImg,
-    config: {
-      color: { middle: { 'bg-base': 'rgb(230, 0, 0)' } },
-    },
-  },
-  {
-    title: '活力橙',
-    key: 'orange',
-    imgUrl: OrangeImg,
-    config: {
-      color: { middle: { 'bg-base': '#B1740D' } },
-    },
-  },
+  // {
+  //   title: 'VSCode风',
+  //   key: 'vscode',
+  //   imgUrl: VscodeImg,
+  //   config: {
+  //     color: { middle: { 'bg-base': '#23272E' } },
+  //   },
+  // },
+  // {
+  //   title: 'IDEA风',
+  //   key: 'idea',
+  //   imgUrl: IdeaImg,
+  //   config: {
+  //     color: { middle: { 'bg-base': '#2B2B2B' } },
+  //   },
+  // },
+  // {
+  //   title: '墨绿风',
+  //   key: 'green',
+  //   imgUrl: GreenImg,
+  //   config: {
+  //     color: { middle: { 'bg-base': '#013a54' } },
+  //   },
+  // },
+  // {
+  //   title: '芭比粉',
+  //   key: 'pink',
+  //   imgUrl: PinkImg,
+  //   config: {
+  //     color: { middle: { 'bg-base': '#B6266D' } },
+  //   },
+  // },
+  // {
+  //   title: '暗夜紫',
+  //   key: 'purple',
+  //   imgUrl: PurpleImg,
+  //   config: {
+  //     color: { middle: { 'bg-base': '#361F68' } },
+  //   },
+  // },
+  // {
+  //   title: '中国红',
+  //   key: 'china',
+  //   imgUrl: ChinaRedImg,
+  //   config: {
+  //     color: { middle: { 'bg-base': 'rgb(230, 0, 0)' } },
+  //   },
+  // },
+  // {
+  //   title: '活力橙',
+  //   key: 'orange',
+  //   imgUrl: OrangeImg,
+  //   config: {
+  //     color: { middle: { 'bg-base': '#B1740D' } },
+  //   },
+  // },
 ];

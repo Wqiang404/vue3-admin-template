@@ -14,7 +14,7 @@
         @themeSelect="configTheme"
       >
         <template #headerActions>
-          <HeaderActions @showSetting="showSetting = true" />
+          <HeaderActions @showSetting="open = true" />
         </template>
         <template #pageFooter>
           <PageFooter />
@@ -25,6 +25,7 @@
           </a-tab-pane>
         </template>
       </stepin-view>
+      <theme-edit :open="open" @close="onClose"></theme-edit>
     </ThemeProvider>
   </a-config-provider>
   <login-modal :unless="['/login']" />
@@ -43,6 +44,11 @@
   import { computed } from 'vue';
 
   const { logout, profile } = useAccountStore();
+
+  const open = ref<boolean>(false);
+  const onClose = () => {
+    open.value = false;
+  };
 
   // 获取个人信息
   profile().then((response) => {
