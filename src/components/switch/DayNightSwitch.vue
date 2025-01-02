@@ -19,7 +19,7 @@
   const { value: _value } = useModelValue(
     () => props.value,
     (val) => emit('update:value', val),
-    'day'
+    'night'
   );
   const switcher: { [key in Type]: Type } = {
     day: 'night',
