@@ -69,6 +69,44 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/pages/home'),
   },
   {
+    path: '/system',
+    name: '系统配置',
+    meta: {
+      icon: 'SettingOutlined',
+      renderMenu: true,
+    },
+    component: () => import('@/components/layout/BlankView.vue'),
+    children: [
+      {
+        path: '/menu',
+        name: '菜单管理',
+        meta: {
+          icon: 'MenuOutlined',
+          cacheable: true,
+        },
+        component: () => import('@/pages/system/menu'),
+      },
+      {
+        path: '/role',
+        name: '角色管理',
+        meta: {
+          icon: 'SolutionOutlined',
+          cacheable: true,
+        },
+        component: () => import('@/pages/system/role'),
+      },
+      {
+        path: '/user',
+        name: '用户管理',
+        meta: {
+          icon: 'TeamOutlined',
+          cacheable: true,
+        },
+        component: () => import('@/pages/system/user'),
+      },
+    ],
+  },
+  {
     path: '/front',
     name: '前端',
     meta: {
