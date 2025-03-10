@@ -9,7 +9,7 @@
 
   const router = useRouter();
   function onLoginSuccess() {
-    router.push('/demo');
+    router.push('/fxrealtime');
   }
 </script>
 <style scoped lang="less">

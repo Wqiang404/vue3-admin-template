@@ -2,14 +2,16 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import createHttp from '@/utils/axiosHttp';
 import { isResponse } from '@/types';
 import NProgress from 'nprogress';
+import Cookie from 'js-cookie';
 
-const http = createHttp({
+const httpConfig = {
   timeout: 10000,
   baseURL: 'api',
   withCredentials: true,
   xsrfCookieName: 'Authorization',
   xsrfHeaderName: 'Authorization',
-});
+};
+const http = createHttp(httpConfig);
 
 const isAxiosResponse = (obj: any): obj is AxiosResponse => {
   return typeof obj === 'object' && obj.status && obj.statusText && obj.headers && obj.config;
@@ -19,6 +21,10 @@ const isAxiosResponse = (obj: any): obj is AxiosResponse => {
 http.interceptors.request.use((req: AxiosRequestConfig) => {
   if (!NProgress.isStarted()) {
     NProgress.start();
+  }
+  const token = Cookie.get(httpConfig.xsrfCookieName);
+  if (token) {
+    req.headers[httpConfig.xsrfHeaderName] = `Bearer ${token}`;
   }
   return req;
 });

@@ -51,17 +51,17 @@
   };
 
   // 获取个人信息
-  profile().then((response) => {
-    const { account } = response;
-    user.name = account.username;
-    user.name = 'test';
-    // user.avatar = account.avatar;
-  });
+  // profile().then((response) => {
+  //   const { account } = response;
+  //   user.name = account.username;
+  //   // user.name = 'test';
+  //   // user.avatar = account.avatar;
+  // });
 
   const showSetting = ref(false);
   const router = useRouter();
 
-  useMenuStore().getMenuList();
+  // useMenuStore().getMenuList();
 
   const { navigation, useTabs, theme, contentClass } = storeToRefs(useSettingStore());
   const themeConfig = computed(() => themeList.find((item) => item.key === theme.value)?.config ?? {});

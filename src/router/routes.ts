@@ -1,41 +1,41 @@
 import { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
+  // {
+  //   path: '/demo',
+  //   name: '示范页面',
+  //   meta: {
+  //     icon: 'BarsOutlined',
+  //     // target: '_blank',
+  //     cacheable: true,
+  //     renderMenu: true,
+  //   },
+  //   component: () => import('@/pages/demo/index'),
+  //   // children: [
+  //   //   {
+  //   //     path: '/demo1',
+  //   //     name: '示范页面1',
+  //   //     meta: {
+  //   //       icon: 'BarsOutlined',
+  //   //       // view: 'blank',
+  //   //       target: '_self',
+  //   //       cacheable: false,
+  //   //       renderMenu: true,
+  //   //     },
+  //   //     component: () => import('@/pages/demo1/index'),
+  //   //   },
+  //   // ],
+  // },
   {
-    path: '/demo',
-    name: '示范页面',
+    path: '/fxrealtime',
+    name: '外汇头寸（实时）',
     meta: {
       icon: 'BarsOutlined',
       // target: '_blank',
       cacheable: true,
       renderMenu: true,
     },
-    component: () => import('@/pages/demo/index'),
-    // children: [
-    //   {
-    //     path: '/demo1',
-    //     name: '示范页面1',
-    //     meta: {
-    //       icon: 'BarsOutlined',
-    //       // view: 'blank',
-    //       target: '_self',
-    //       cacheable: false,
-    //       renderMenu: true,
-    //     },
-    //     component: () => import('@/pages/demo1/index'),
-    //   },
-    // ],
-  },
-  {
-    path: '/demo1',
-    name: '示范页面1',
-    meta: {
-      icon: 'BarsOutlined',
-      // target: '_blank',
-      cacheable: true,
-      renderMenu: true,
-    },
-    component: () => import('@/pages/demo1/index'),
+    component: () => import('@/pages/fxrealtime/index'),
   },
   {
     path: '/login',
@@ -73,7 +73,7 @@ const routes: RouteRecordRaw[] = [
     name: '系统配置',
     meta: {
       icon: 'SettingOutlined',
-      renderMenu: true,
+      renderMenu: false,
     },
     component: () => import('@/components/layout/BlankView.vue'),
     children: [

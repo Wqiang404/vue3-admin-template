@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import http from './http';
-import { Response } from '@/types';
+import { Response, LoginResponse } from '@/types';
 import { useMenuStore } from './menu';
 import { useAuthStore } from '@/plugins';
 import { useLoadingStore } from './loading';
@@ -19,6 +19,7 @@ export interface Account {
 export type TokenResult = {
   token: string;
   expires: number;
+  access_token: string;
 };
 export const useAccountStore = defineStore('account', {
   state() {
@@ -31,14 +32,19 @@ export const useAccountStore = defineStore('account', {
   },
   actions: {
     async login(username: string, password: string) {
+      const formData = new FormData();
+      const userInfo = { username, password };
+      for (const key in userInfo) {
+        formData.append(key, userInfo[key]);
+      }
       return http
-        .request<TokenResult, Response<TokenResult>>('/login', 'post_json', { username, password })
+        .request<TokenResult, LoginResponse<TokenResult>>('/v1/auth/login', 'POST_JSON', formData)
         .then(async (response) => {
-          if (response.code === 0) {
+          if (response.code === 200) {
             this.logged = true;
-            http.setAuthorization(`Bearer ${response.data.token}`, new Date(response.data.expires));
+            http.setAuthorization(`Bearer ${response.access_token}`, new Date(response.expires) || 3600 * 1000);
             await useMenuStore().getMenuList();
-            return response.data;
+            return response;
           } else {
             return Promise.reject(response);
           }
