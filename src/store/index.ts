@@ -5,6 +5,8 @@ export * from './menu';
 export * from './setting';
 export * from './loading';
 
+export * from './fxrealtime';
+
 const pinia = createPinia();
 
 export default pinia;

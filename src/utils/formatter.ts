@@ -1,3 +1,5 @@
+import { isNull, isNumber } from './helpers';
+
 /**
  * 格式化金额
  * @param value
@@ -6,12 +8,7 @@
  */
 export function formatMoney(value: number, fixed: number = 0) {
   let unit: string = value < 10000 ? '' : value < 100000000 ? 'w' : '亿';
-  value =
-    value < 10000
-      ? value
-      : value < 100000000
-      ? value / 10000
-      : value / 100000000;
+  value = value < 10000 ? value : value < 100000000 ? value / 10000 : value / 100000000;
   let format: string = value.toFixed(fixed);
   const _val = format.split('.');
   const _int = _val[0],
@@ -26,13 +23,18 @@ export function formatMoney(value: number, fixed: number = 0) {
  * @returns
  */
 export function formatThousand(value: number, fixed: number = 0): string {
-  const _val: string[] = value.toFixed(fixed).split('.');
-  let [_int, _dec] = _val;
-  _dec = (parseInt(_dec) === 0 ? undefined : _dec) as string;
-  let numbers = [];
-  let format = '';
-  for (let i = _int.length; i >= 0; i -= 3) {
-    numbers.push(_int.substring(i - 3 < 0 ? 0 : i - 3, i));
+  return value.toFixed(fixed).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+// 四舍五入金额，每隔3位逗号分隔，默认2位小数, 千分位格式化, nan,NaN值填充,自定义缩小倍率
+export function formatAmountFillna({ cellValue }, digits = 2, fillVal = '-', shrink = null) {
+  if (!isNull(shrink) && isNumber(shrink)) {
+    return ['nan', 'NaN', 'inf', 'INF', '-', undefined, null].includes(cellValue)
+      ? fillVal
+      : formatThousand(Number(cellValue) / shrink, digits);
+  } else {
+    return ['nan', 'NaN', 'inf', 'INF', '-', undefined, null].includes(cellValue)
+      ? fillVal
+      : formatThousand(Number(cellValue), digits);
   }
-  return numbers.reverse().join(',') + ((_dec && `.${_dec}`) ?? '');
 }

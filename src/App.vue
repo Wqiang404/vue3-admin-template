@@ -1,5 +1,5 @@
 <template>
-  <a-config-provider :getPopupContainer="getPopupContainer">
+  <a-config-provider :getPopupContainer="getPopupContainer" :locale="zhCN">
     <ThemeProvider is-root v-bind="themeConfig" :apply-style="false">
       <stepin-view
         system-name="FICC 数智平台"
@@ -32,6 +32,7 @@
 </template>
 
 <script lang="ts" setup>
+  import zhCN from 'ant-design-vue/es/locale/zh_CN';
   import { reactive, ref } from 'vue';
   import { useRouter } from 'vue-router';
   import { useAccountStore, useMenuStore, useSettingStore, storeToRefs } from '@/store';

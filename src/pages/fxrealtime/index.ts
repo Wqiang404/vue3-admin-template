@@ -1,2 +1,2 @@
-import Demo1 from './Demo1.vue';
-export default Demo1;
+import FxRealtime from './FxRealtime.vue';
+export default FxRealtime;
