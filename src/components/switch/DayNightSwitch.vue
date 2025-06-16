@@ -4,7 +4,8 @@
   import cloneDeep from 'lodash/cloneDeep';
   import { storeToRefs } from 'pinia';
   import { useThemeStore, ThemeProvider } from 'stepin/es/theme-provider';
-
+  import { useSettingStore } from '@/store';
+  const { setDark } = useSettingStore();
   export type Type = 'day' | 'night';
 
   const props = defineProps({
@@ -54,11 +55,15 @@
     }
     return { middle: { 'bg-base': props.nightColor } };
   });
+  const dayNightSwitch = () => {
+    _value.value = switcher[_value.value];
+    setDark(_value.value === 'night');
+  };
 </script>
 <template>
   <ThemeProvider is-root :color="colorCfg">
     <div
-      @click="() => (_value = switcher[_value])"
+      @click="dayNightSwitch"
       class="bg-fill-2 day-night-switch hover:border-border relative border-border-2 text-lg rounded-full border border-solid flex items-center"
     >
       <div :class="`spot transition-[left] duration-300 h-full absolute rounded-full bg-container ${_value}`"></div>

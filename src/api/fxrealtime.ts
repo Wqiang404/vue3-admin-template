@@ -56,3 +56,7 @@ export const reqFxRealTimeSimulationEnumerate = (param) => {
     param
   );
 };
+
+export const reqFxRealTimeTotalTarget = (param) => {
+  return http.request<DefaultProps, Response<DefaultProps>>('/v2/position/fxRealTime/total-target', 'GET', param);
+};

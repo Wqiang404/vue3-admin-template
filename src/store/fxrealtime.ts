@@ -14,6 +14,7 @@ import {
   reqFxRealTimeTeamEnumerate,
   reqFxRealTimeTenorEnumerate,
   reqFxRealTimeSimulationEnumerate,
+  reqFxRealTimeTotalTarget,
 } from '@/api/fxrealtime';
 import { formatAmountFillna } from '@/utils/formatter';
 
@@ -42,10 +43,17 @@ export const useFxRealtimeStore = defineStore('fxrealtime', {
         lastUpdateTime: ' ',
       },
       chartData: {
-        title: '暂无数据',
+        title: {
+          topTitle: '暂无数据',
+          yLeftName: '暂无数据',
+          yRightName: '暂无数据',
+        },
         legend: [],
         xdata: [],
         ydata: [],
+        zoom: [0, 100],
+        scale: true,
+        refreshData: false,
       },
       tenorDataRaw: null,
       selectRow: null,
@@ -169,6 +177,56 @@ export const useFxRealtimeStore = defineStore('fxrealtime', {
       this.getConditionOption();
       this.getTenorOption();
       this.getSimulationOption();
+    },
+    async cellClickEventTotal(record, column, ev) {
+      if (column.dataIndex === 'ccypair') return;
+      if (this.formFilter.querytype === 'strategy') return;
+
+      // 获取指标折线图
+      const params = Object.assign({
+        date: this.formFilter.date,
+        querytype: this.formFilter.querytype,
+        querycondition: this.formFilter.querycondition,
+        teams: this.formFilter.teams,
+        targetcol: column.dataIndex,
+        targetrow: record[this.tableLabel[0]['dataIndex']],
+      });
+      const res = await reqFxRealTimeTotalTarget(params);
+      let yRightName = null;
+      if (res.code === 200 && res.data != null) {
+        const chartData = res.data;
+        let querycondition = params['querycondition'] || '';
+        querycondition = querycondition.charAt(0).toUpperCase() + querycondition.substring(1);
+        const legendKeys = Object.keys(chartData).filter((item) => item !== 'DATETIME'); // ['values', 'rate']
+        const legendMap = { values: querycondition, rate: 'Rate' };
+        const xdata = chartData['DATETIME'];
+        let y_left = [];
+        let y_right = [];
+        legendKeys.map((key) => {
+          const data = (res.data[key] || []).map((x) => Number(x).toFixed(2));
+          if (key === 'values') {
+            y_left = data;
+          } else if (key === 'rate') {
+            yRightName = 'FXRate';
+            y_right = data;
+          }
+        });
+
+        this.chartData = {
+          title: {
+            topTitle: querycondition + '--' + params['targetcol'] + '--' + params['targetrow'],
+            yLeftName: querycondition,
+            yRightName: yRightName,
+          },
+          legend: legendKeys.map((item) => legendMap[item]),
+          xdata: xdata,
+          ydata: [y_left, y_right],
+          zoom: [0, 100],
+          scale: true,
+          refreshData: false,
+        };
+        this.targetShow = true;
+      }
     },
     async getTableData() {
       if (this.formFilter.teams && this.formFilter.teams.length) {

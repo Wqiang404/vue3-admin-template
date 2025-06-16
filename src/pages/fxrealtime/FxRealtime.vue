@@ -56,6 +56,7 @@
         sticky-header
         column-resizable
         :scroll="{ maxHeight: '640px' }"
+        @cell-click="cellClickEventTotal"
       >
       </arco-table>
     </a-card>
@@ -170,7 +171,24 @@
           column-resizable
           :scroll="{ x: '800px', y: '800px' }"
         >
+          <!-- <template #title>
+            <a-tooltip>11111</a-tooltip>
+          </template> -->
         </arco-table>
+      </div>
+    </arco-drawer>
+
+    <!-- 抽屉 2 --时序折线图 -->
+    <arco-drawer
+      :visible="targetShow"
+      :header="false"
+      :footer="false"
+      width="70%"
+      unmountOnClose
+      @cancel="targetShow = false"
+    >
+      <div class="chart-wrapper">
+        <LineChart style="height: 400px" :chartData="chartData" />
       </div>
     </arco-drawer>
   </div>
@@ -180,6 +198,7 @@
 <script lang="ts" setup>
   // import { ThemeProvider } from 'stepin';
   import { computed, h, onActivated, onDeactivated, onMounted, onUnmounted } from 'vue';
+  import { LineChart } from '@/components/chart';
   import { BookOutlined, LayoutOutlined, ScheduleOutlined } from '@ant-design/icons-vue';
   import { reactive } from 'vue';
   import { useFxRealtimeStore, storeToRefs } from '@/store';
@@ -199,6 +218,7 @@
     simulationEvent,
     taskTimer,
     clearTimer,
+    cellClickEventTotal,
   } = useFxRealtimeStore();
   const {
     loading,
@@ -221,6 +241,8 @@
     ccypair2Options,
     tableDataSimulation,
     optionMatureTable,
+    targetShow,
+    chartData,
   } = storeToRefs(useFxRealtimeStore());
   let { timer } = storeToRefs(useFxRealtimeStore());
 

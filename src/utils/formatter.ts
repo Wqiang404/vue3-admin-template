@@ -38,3 +38,14 @@ export function formatAmountFillna({ cellValue }, digits = 2, fillVal = '-', shr
       : formatThousand(Number(cellValue), digits);
   }
 }
+
+export function formatTimestamp(date: Date = new Date(), str: string = '-'): string {
+  return [
+    date.getFullYear(),
+    String(date.getMonth() + 1).padStart(2, '0'),
+    String(date.getDate()).padStart(2, '0'),
+    String(date.getHours()).padStart(2, '0'),
+    String(date.getMinutes()).padStart(2, '0'),
+    String(date.getSeconds()).padStart(2, '0'),
+  ].join(str);
+}
