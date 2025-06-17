@@ -17,6 +17,7 @@ interface NaviGuard {
 const loginGuard: NavigationGuard = function (to, from) {
   const account = useAccountStore();
   if (!http.checkAuthorization() && !/^\/(login|home)?$/.test(to.fullPath)) {
+    account.logout(); // 新增登出清理操作
     return '/login';
     // account.setLogged(false);
   }

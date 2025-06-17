@@ -39,6 +39,9 @@ http.interceptors.response.use(
     return Promise.reject({ message: rep.statusText, code: rep.status, data });
   },
   (error) => {
+    if (error.response.status === 401) {
+      window.location.href = '/login';
+    }
     if (error.response && isAxiosResponse(error.response)) {
       return Promise.reject({
         message: error.response.statusText,
