@@ -44,7 +44,7 @@
         Simulation
       </a-button>
     </a-card>
-    <a-card class="card-fxrealtime min-h-[680px]">
+    <a-card class="card-fxrealtime min-h-[680px] overflow-scroll">
       <arco-table
         :columns="tableLabel"
         :data="tableData"
@@ -171,9 +171,6 @@
           column-resizable
           :scroll="{ x: '800px', y: '800px' }"
         >
-          <!-- <template #title>
-            <a-tooltip>11111</a-tooltip>
-          </template> -->
         </arco-table>
       </div>
     </arco-drawer>

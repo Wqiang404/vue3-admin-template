@@ -17,6 +17,7 @@ import {
   reqFxRealTimeTotalTarget,
 } from '@/api/fxrealtime';
 import { formatAmountFillna } from '@/utils/formatter';
+import { Tooltip } from '@arco-design/web-vue';
 
 export const useFxRealtimeStore = defineStore('fxrealtime', {
   state() {
@@ -235,8 +236,8 @@ export const useFxRealtimeStore = defineStore('fxrealtime', {
         this.loading = false;
         if (res.code === 200 && res.data != null) {
           this.tableData = res.data.tableData;
-          this.tableLabel = formatColumns(res.data.tableLabel || []);
           this.traderBooks = res.data.traderBooks;
+          this.tableLabel = formatColumns(res.data.tableLabel || [], this.traderBooks);
           this.formFilter.lastUpdateTime = res.data.lastupdatetime;
         }
       } else {
@@ -283,16 +284,45 @@ export const useFxRealtimeStore = defineStore('fxrealtime', {
     },
   },
 });
+function titleTooltipRender(field: string, traderBooks: object, title: string) {
+  if (Array.isArray(traderBooks[field])) {
+    return traderBooks[field].join('\n');
+  } else {
+    return title;
+  }
+}
+function tableCellTooltipRender(traderBooks: object, row: object) {
+  if (Array.isArray(traderBooks[row['Trader']])) {
+    return traderBooks[row['Trader']].join('\n');
+  } else {
+    return row['Trader'];
+  }
+}
 
-function formatColumns(columns) {
-  return columns.map((item) => {
+function formatColumns(columns, traderBooks) {
+  return columns.map((item: string[], index: number) => {
     const colItem: TableColumnData = {
-      title: item[1],
+      title: () => {
+        if (index === 0) {
+          return item[1];
+        } else {
+          return h(
+            Tooltip,
+            { content: titleTooltipRender(item[0], traderBooks, item[1]), contentClass: 'w-[150px]' },
+            () => h('span', {}, item[1])
+          );
+        }
+      },
       dataIndex: item[0],
       minWidth: 90,
       align: 'right',
       render: ({ record, column, rowIndex }) => {
         if (['Trader', 'Book', 'ccypair', 'oldtactics'].includes(item[0])) {
+          if (item[0] === 'Trader') {
+            return h(Tooltip, { content: tableCellTooltipRender(traderBooks, record), contentClass: 'w-[150px]' }, () =>
+              h('strong', {}, record[item[0]] || '-')
+            );
+          }
           return h('strong', {}, record[item[0]] || '-');
         }
         const value = record[item[0]] === 0 ? '-' : formatAmountFillna({ cellValue: record[item[0]] });
@@ -305,6 +335,9 @@ function formatColumns(columns) {
     }
     if (['oldtactics'].includes(item[0])) {
       colItem.minWidth = 160;
+    }
+    if (['代客外币对', '代客自贸区', 'ccypair'].includes(item[0])) {
+      colItem.minWidth = 200;
     }
     return colItem;
   });
