@@ -1,36 +1,46 @@
 <template>
   <div class="menu-container grid grid-rows-none gap-4 mt-xxs">
-    <a-card class="h-[780px]" hoverable>
+    <a-card class="" hoverable>
       <arco-row>
         <arco-col :span="4">
-          <arco-input-search style="margin-bottom: 8px; max-width: 240px" v-model="searchKey" />
+          <arco-input-search style="margin-bottom: 8px; max-width: 200px; margin-right: 8px" v-model="searchKey" />
+          <a-button type="primary" @click="getTableData">查询</a-button>
           <div class="flex justify-around w-[240px] my-3">
             <a-button type="primary" @click="toggleExpanded">
               {{ expandedKeys?.length ? '收起全部' : '展开全部' }}
             </a-button>
             <a-button type="primary">新增菜单</a-button>
           </div>
-          <arco-tree
-            :data="treeData"
-            v-model:expanded-keys="expandedKeys"
-            :show-line="true"
-            :size="'large'"
-            draggable
-            @drop="onDrop"
-          >
-            <template #title="nodeData">
-              <template v-if="getMatchIndex(nodeData?.title) < 0">{{ nodeData?.title }}</template>
-              <span v-else>
-                {{ nodeData?.title?.substr(0, getMatchIndex(nodeData?.title)) }}
-                <span style="color: var(--color-primary-light-4)">
-                  {{ nodeData?.title?.substr(getMatchIndex(nodeData?.title), searchKey.length) }} </span
-                >{{ nodeData?.title?.substr(getMatchIndex(nodeData?.title) + searchKey.length) }}
-              </span>
-            </template>
-          </arco-tree>
+          <div class="h-[630px] overflow-scroll">
+            <arco-tree
+              :data="treeData"
+              v-model:expanded-keys="expandedKeys"
+              :show-line="true"
+              :size="'large'"
+              draggable
+              @drop="onDrop"
+            >
+              <template #title="nodeData">
+                <template v-if="getMatchIndex(nodeData?.title) < 0">{{ nodeData?.title }}</template>
+                <span v-else>
+                  {{ nodeData?.title?.substr(0, getMatchIndex(nodeData?.title)) }}
+                  <span style="color: var(--color-primary-light-4)">
+                    {{ nodeData?.title?.substr(getMatchIndex(nodeData?.title), searchKey.length) }}
+                  </span>
+                  {{ nodeData?.title?.substr(getMatchIndex(nodeData?.title) + searchKey.length) }}
+                </span>
+              </template>
+            </arco-tree>
+          </div>
         </arco-col>
-        <arco-col :span="18">
-          <arco-table :columns="columns" :data="data" :pagination="false"></arco-table>
+        <arco-col :span="20">
+          <arco-table
+            :columns="columns"
+            :data="data"
+            :pagination="false"
+            :loading="loading"
+            :scroll="{ maxHeight: '720px' }"
+          ></arco-table>
         </arco-col>
       </arco-row>
     </a-card>
@@ -38,39 +48,21 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, reactive, ref } from 'vue';
-  const originTreeData = ref([
-    {
-      title: 'Trunk 0-0',
-      key: '0-0',
-      children: [
-        {
-          title: 'Branch 0-0-0',
-          key: '0-0-0',
-          children: [
-            {
-              title: 'Leaf-1',
-              key: '0-0-0-0',
-            },
-            {
-              title: 'Leaf-2',
-              key: '0-0-0-1',
-            },
-          ],
-        },
-        {
-          title: 'Branch 0-0-1',
-          key: '0-0-1',
-          children: [
-            {
-              title: 'Leaf-3',
-              key: '0-0-1-0',
-            },
-          ],
-        },
-      ],
-    },
-  ]);
+  import { computed, reactive, ref, h, onMounted } from 'vue';
+  import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
+  import { getIconMap } from '@/utils/helpers';
+  import { formatMenuListToTree } from '@/utils/formatter';
+  import { useMenuRebuildStore, storeToRefs } from '@/store';
+
+  const { getTableData } = useMenuRebuildStore();
+  const { loading, formFilter, tableData } = storeToRefs(useMenuRebuildStore());
+
+  const data = computed(() => {
+    return tableData.value.filter((item) => !item.parent_id).sort((a, b) => a.sequence - b.sequence);
+  });
+  const originTreeData = computed(() => {
+    return formatMenuListToTree(tableData.value);
+  });
   const initTreeData = (data, parent: string | null = null) => {
     data.forEach((item) => {
       item.parent = parent;
@@ -81,14 +73,30 @@
   };
   initTreeData(originTreeData.value);
   const expandedKeys = ref([]);
-  const allExpandedKeys = ['0-0', '0-0-0', '0-0-1'];
+  const allExpandedKeys = computed(() => {
+    return formatMenuListToTree(tableData.value).map((treeItem) => treeItem.id);
+  });
   const toggleExpanded = () => {
-    expandedKeys.value = expandedKeys?.value.length ? [] : allExpandedKeys;
+    expandedKeys.value = expandedKeys?.value.length ? [] : allExpandedKeys.value;
   };
   const searchKey = ref('');
   const treeData = computed(() => {
-    if (!searchKey.value) return originTreeData.value;
-    return searchData(searchKey.value);
+    let list: any[] = [];
+    if (!searchKey.value) {
+      list = originTreeData.value;
+    } else {
+      list = searchData(searchKey.value);
+    }
+    const genTreeData = (arr) => {
+      return arr.map((item) => {
+        return {
+          key: item.id,
+          title: item.name,
+          children: genTreeData(item.children || []),
+        };
+      });
+    };
+    return genTreeData(list);
   });
 
   function searchData(keyword) {
@@ -152,62 +160,67 @@
     }
   };
 
-  const columns = [
+  onMounted(() => {
+    getTableData();
+  });
+
+  const columns: TableColumnData[] = [
     {
-      title: 'Name',
+      title: '排序值',
+      dataIndex: 'sequence',
+      minWidth: 90,
+      align: 'center',
+    },
+    {
+      title: '图标',
+      dataIndex: 'icon',
+      minWidth: 90,
+      align: 'center',
+      render: ({ record, column, rowIndex }) => {
+        const IconComponent = getIconMap().get('apps');
+        return h(IconComponent, { class: 'text-[18px] mx-[4px]' });
+      },
+    },
+    {
+      title: '名称',
       dataIndex: 'name',
     },
     {
-      title: 'Salary',
-      dataIndex: 'salary',
+      title: '组件名称',
+      dataIndex: 'code',
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
+      title: '操作指令',
+      dataIndex: 'directive',
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
+      title: '菜单地址',
+      dataIndex: 'url',
     },
+    {
+      title: '隐藏',
+      dataIndex: 'hidden',
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+    },
+    {
+      title: '类型',
+      dataIndex: 'menu_type',
+    },
+    {
+      title: '父菜单',
+      dataIndex: 'parent_id',
+    },
+    {
+      title: '描述',
+      dataIndex: 'remark',
+    },
+    // {
+    //   title: '操作',
+    // },
   ];
-
-  const data = reactive([
-    {
-      key: '1',
-      name: 'Jane Doe',
-      salary: 23000,
-      address: '32 Park Road, London',
-      email: 'jane.doe@example.com',
-    },
-    {
-      key: '2',
-      name: 'Alisa Ross',
-      salary: 25000,
-      address: '35 Park Road, London',
-      email: 'alisa.ross@example.com',
-    },
-    {
-      key: '3',
-      name: 'Kevin Sandra',
-      salary: 22000,
-      address: '31 Park Road, London',
-      email: 'kevin.sandra@example.com',
-    },
-    {
-      key: '4',
-      name: 'Ed Hellen',
-      salary: 17000,
-      address: '42 Park Road, London',
-      email: 'ed.hellen@example.com',
-    },
-    {
-      key: '5',
-      name: 'William Smith',
-      salary: 27000,
-      address: '62 Park Road, London',
-      email: 'william.smith@example.com',
-    },
-  ]);
 </script>
 
 <style scoped lang="less"></style>

@@ -1,4 +1,4 @@
-import { isNull, isNumber } from './helpers';
+import { deepClone, isNull, isNumber } from './helpers';
 
 /**
  * 格式化金额
@@ -48,4 +48,24 @@ export function formatTimestamp(date: Date = new Date(), str: string = '-'): str
     String(date.getMinutes()).padStart(2, '0'),
     String(date.getSeconds()).padStart(2, '0'),
   ].join(str);
+}
+
+export function formatMenuListToTree(arr) {
+  const list = deepClone(arr);
+  const treeList = list.filter((listItem) => !listItem.parent_id);
+  treeList.sort((a, b) => a.sequence - b.sequence);
+  function genChild(parentList) {
+    parentList.forEach((item) => {
+      item.title = item.name;
+      item.key = item.id;
+      delete item.hidden; // 去掉hidden字段，要不然tree会隐藏该节点
+      item.children = list.filter((listItem) => listItem.parent_id === item.id);
+      if (item.children.length) {
+        item.children.sort((a, b) => a.sequence - b.sequence);
+        genChild(item.children);
+      }
+    });
+  }
+  genChild(treeList);
+  return treeList;
 }

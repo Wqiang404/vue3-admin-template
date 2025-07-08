@@ -6,6 +6,7 @@ export * from './setting';
 export * from './loading';
 
 export * from './fxrealtime';
+export * from './menuRebuild';
 
 const pinia = createPinia();
 

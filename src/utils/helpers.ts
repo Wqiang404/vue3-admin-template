@@ -1,3 +1,5 @@
+import * as icons from '@arco-design/web-vue/es/icon';
+
 /**
  * 初始化目标值为 undefined 的属性
  * @param target 目标对象
@@ -42,4 +44,34 @@ export function removeDuplicates(arr) {
 
 export function transpose<T>(matrix: T[][]): T[][] {
   return matrix[0].map((_, i) => matrix.map((row) => row[i]));
+}
+
+export function deepClone<T>(obj: T): T {
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map((item) => deepClone(item)) as T;
+  }
+
+  const clone: T = {} as T;
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      clone[key] = deepClone(obj[key]);
+    }
+  }
+  return clone;
+}
+
+export function getIconMap() {
+  // 创建图标映射表
+  const iconMap = new Map();
+  Object.keys(icons).forEach((key) => {
+    if (key.startsWith('Icon')) {
+      const name = key.replace('Icon', '').toLowerCase();
+      iconMap.set(name, icons[key]);
+    }
+  });
+  return iconMap;
 }

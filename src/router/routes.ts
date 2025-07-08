@@ -73,7 +73,7 @@ const routes: RouteRecordRaw[] = [
     name: '系统配置',
     meta: {
       icon: 'SettingOutlined',
-      renderMenu: false,
+      renderMenu: true,
     },
     component: () => import('@/components/layout/BlankView.vue'),
     children: [

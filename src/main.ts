@@ -8,6 +8,7 @@ import pinia from '@/store';
 // 开发引入此包是为了加载优化，防止首次打开页面过慢
 import 'ant-design-vue/dist/antd.variable.less';
 import ArcoVue from '@arco-design/web-vue';
+import ArcoVueIcon from '@arco-design/web-vue/es/icon';
 import '@arco-design/web-vue/dist/arco.css';
 import 'stepin/es/style';
 // import 'default-passive-events';
@@ -28,6 +29,7 @@ app.use(ArcoVue, {
   // 用于改变使用组件时的前缀名称
   componentPrefix: 'arco',
 });
+app.use(ArcoVueIcon);
 app.config.errorHandler = function (err) {
   console.error('未捕获的异常，', err);
 };
