@@ -15,9 +15,11 @@
             <arco-tree
               :data="treeData"
               v-model:expanded-keys="expandedKeys"
+              v-model:selected-keys="selectedTreeNode"
               :show-line="true"
               :size="'large'"
               draggable
+              @select="onTreeSelect"
               @drop="onDrop"
             >
               <template #title="nodeData">
@@ -34,16 +36,18 @@
           </div>
         </arco-col>
         <arco-col :span="20">
-          <arco-table
-            :columns="columns"
-            :data="data"
-            :pagination="false"
-            :loading="loading"
-            :scroll="{ maxHeight: '720px' }"
-          ></arco-table>
+          <arco-table :columns="columns" :data="data" :pagination="false" :loading="loading" :scroll="{ maxHeight: '720px' }">
+            <template #optional="{ record }">
+              <a-button class="mr-1" type="primary" ghost @click="showRoleAndUserListModal(record)"> view </a-button>
+              <a-button class="mr-1" type="primary" ghost @click="$modal.info({ title: 'Name', content: record.name })"> edit </a-button>
+              <a-button class="mr-1" danger @click="$modal.info({ title: 'Name', content: record.name })"> delete </a-button>
+            </template>
+          </arco-table>
         </arco-col>
       </arco-row>
     </a-card>
+
+    <RoleAndUserListModal />
   </div>
 </template>
 
@@ -53,11 +57,16 @@
   import { getIconMap } from '@/utils/helpers';
   import { formatMenuListToTree } from '@/utils/formatter';
   import { useMenuRebuildStore, storeToRefs } from '@/store';
+  import RoleAndUserListModal from './RoleAndUserListModal.vue';
 
-  const { getTableData } = useMenuRebuildStore();
-  const { loading, formFilter, tableData } = storeToRefs(useMenuRebuildStore());
+  const { getTableData, viewEvent } = useMenuRebuildStore();
+  const { loading, formFilter, tableData, selectedTreeNode, isShowRoleAndUserListModal } = storeToRefs(useMenuRebuildStore());
+  const menuTypeMap = ['全部', '目录', '菜单', '操作'];
 
   const data = computed(() => {
+    if (selectedTreeNode.value && selectedTreeNode.value[0]) {
+      return tableData.value.filter((item) => item.parent_id === selectedTreeNode.value[0]).sort((a, b) => a.sequence - b.sequence);
+    }
     return tableData.value.filter((item) => !item.parent_id).sort((a, b) => a.sequence - b.sequence);
   });
   const originTreeData = computed(() => {
@@ -98,6 +107,13 @@
     };
     return genTreeData(list);
   });
+
+  const onTreeSelect = (selectedKeys, data) => {
+    const current = tableData.value.find((item) => item.id === selectedKeys[0]);
+    if (current && current.menu_type < 3) {
+      selectedTreeNode.value = [current.id];
+    }
+  };
 
   function searchData(keyword) {
     const loop = (data) => {
@@ -164,17 +180,26 @@
     getTableData();
   });
 
+  const showRoleAndUserListModal = (record) => {
+    isShowRoleAndUserListModal.value = true;
+    viewEvent(record);
+  };
+  const getMenuName = () => {
+    const current = tableData.value.find((item) => item.id === selectedTreeNode.value[0]);
+    return current?.name || '';
+  };
+
   const columns: TableColumnData[] = [
     {
       title: '排序值',
       dataIndex: 'sequence',
-      minWidth: 90,
+      width: 80,
       align: 'center',
     },
     {
       title: '图标',
       dataIndex: 'icon',
-      minWidth: 90,
+      width: 70,
       align: 'center',
       render: ({ record, column, rowIndex }) => {
         const IconComponent = getIconMap().get('apps');
@@ -184,42 +209,65 @@
     {
       title: '名称',
       dataIndex: 'name',
+      width: 180,
     },
     {
       title: '组件名称',
       dataIndex: 'code',
+      minWidth: 160,
     },
     {
       title: '操作指令',
       dataIndex: 'directive',
+      width: 100,
     },
     {
       title: '菜单地址',
       dataIndex: 'url',
+      minWidth: 280,
     },
     {
       title: '隐藏',
       dataIndex: 'hidden',
+      width: 70,
+      render: ({ record, column, rowIndex }) => {
+        return h('span', { class: '' }, record.hidden ? '隐藏' : '显示');
+      },
     },
     {
       title: '状态',
       dataIndex: 'status',
+      width: 70,
+      render: ({ record, column, rowIndex }) => {
+        return h('span', { class: '' }, record.status ? '有效' : '无效');
+      },
     },
     {
       title: '类型',
       dataIndex: 'menu_type',
+      width: 70,
+      render: ({ record, column, rowIndex }) => {
+        return h('span', { class: '' }, menuTypeMap[record.menu_type]);
+      },
     },
     {
       title: '父菜单',
       dataIndex: 'parent_id',
+      width: 90,
+      render: ({ record, column, rowIndex }) => {
+        return h('span', { class: '' }, getMenuName());
+      },
     },
     {
       title: '描述',
       dataIndex: 'remark',
+      minWidth: 150,
     },
-    // {
-    //   title: '操作',
-    // },
+    {
+      title: '操作',
+      width: 230,
+      slotName: 'optional',
+    },
   ];
 </script>
 
