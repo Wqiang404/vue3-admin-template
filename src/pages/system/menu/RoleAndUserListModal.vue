@@ -1,8 +1,16 @@
 <template>
-  <arco-modal v-model:visible="isShowRoleAndUserListModal" :title="'菜单已授权角色及用户'" width="50%" :footer="false" @cancel="handleCancel" draggable unmount-on-close>
+  <arco-modal
+    v-model:visible="isShowRoleAndUserListModal"
+    :title="selectRow.name + ' - 菜单已授权角色及用户'"
+    width="50%"
+    :footer="false"
+    @cancel="handleCancel"
+    draggable
+    unmount-on-close
+  >
     <a-radio-group v-model:value="activeKey" button-style="solid" class="mb-1">
-      <a-radio-button value="roles">菜单已授权角色</a-radio-button>
-      <a-radio-button value="users">菜单已授权用户</a-radio-button>
+      <a-radio-button value="roles">{{ selectRow.name }} - 菜单已授权角色</a-radio-button>
+      <a-radio-button value="users">{{ selectRow.name }} - 菜单已授权用户</a-radio-button>
     </a-radio-group>
     <arco-table
       v-show="activeKey === 'roles'"
@@ -57,7 +65,7 @@
   import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
   import { IconSearch } from '@arco-design/web-vue/es/icon';
 
-  const { isShowRoleAndUserListModal, menuRoleUserData, roleAndUserDataLoading } = storeToRefs(useMenuRebuildStore());
+  const { selectRow, isShowRoleAndUserListModal, menuRoleUserData, roleAndUserDataLoading } = storeToRefs(useMenuRebuildStore());
 
   // 当前激活的标签页
   const activeKey = ref('roles');
