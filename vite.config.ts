@@ -74,17 +74,14 @@ export default ({ command, mode }) => {
         dts: 'auto-imports.d.ts', // 生成类型声明文件
       }),
       Components({
-        resolvers: [
-          AntDesignVueResolver({ importStyle: mode === 'development' ? false : 'less' }),
-          ArcoResolver({ sideEffect: true }),
-        ],
+        resolvers: [AntDesignVueResolver({ importStyle: mode === 'development' ? false : 'less' }), ArcoResolver({ sideEffect: true })],
       }),
     ],
     css: {
       preprocessorOptions: {
         less: {
           plugins: [AntdvLessPlugin],
-          modifyVars: AntdvModifyVars,
+          modifyVars: { ...AntdvModifyVars, 'arcoblue-6': '#0ea5e9' },
           javascriptEnabled: true,
         },
       },

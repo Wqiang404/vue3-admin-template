@@ -4,7 +4,7 @@ import type { NotificationPlacement } from 'ant-design-vue';
 export function useNotification() {
   const api = notification;
 
-  const openNotification = (desc: string, placement: NotificationPlacement = 'topRight', message: string = '提示') => {
+  const openNotification = (desc: string, message: string = '提示', placement: NotificationPlacement = 'topRight') => {
     api.info({
       message: message,
       description: desc,

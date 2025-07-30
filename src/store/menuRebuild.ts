@@ -1,6 +1,22 @@
 import { defineStore } from 'pinia';
-import { reqMenuList, reqMenusUsers } from '@/api/menu';
+import { reqMenuList, reqMenusUsers, reqMenuDelete, reqMenusAll } from '@/api/menu';
+import { notification } from 'ant-design-vue';
+import { formatAllMenuListToTree } from '@/utils/formatter';
 
+export const initFormState = {
+  menu_type: 2,
+  operate_type: 'none',
+  name: null,
+  code: null,
+  directive: null,
+  url: null,
+  parent_id: '',
+  icon: 'BankFilled',
+  status: 1,
+  hidden: 0,
+  remark: null,
+  sequence: 10,
+};
 export const useMenuRebuildStore = defineStore('menuRebuild', {
   state() {
     return {
@@ -14,6 +30,10 @@ export const useMenuRebuildStore = defineStore('menuRebuild', {
       selectRow: null,
       menuRoleUserData: { rolse: [], admins: [] },
       roleAndUserDataLoading: false,
+      isShowEditFormModal: false,
+      editType: 'add' as 'add' | 'edit',
+      menuOptions: [],
+      formState: { ...initFormState },
     };
   },
   actions: {
@@ -27,10 +47,10 @@ export const useMenuRebuildStore = defineStore('menuRebuild', {
       } else {
         this.tableData = [];
       }
-      this.selectedTreeNode = [];
+      // this.selectedTreeNode = [];
     },
     viewEvent(row) {
-      this.selectRow = row;
+      // this.selectRow = row;
       this.roleAndUserDataLoading = true;
       // 用户已授权菜单列表
       reqMenusUsers({ mid: row.id }).then((res) => {
@@ -44,6 +64,30 @@ export const useMenuRebuildStore = defineStore('menuRebuild', {
         }
         this.roleAndUserDataLoading = false;
       });
+    },
+    removeEvent(row) {
+      reqMenuDelete([row.id])
+        .then((res) => {
+          notification.info({
+            message: '提示',
+            description: res.message,
+            placement: 'topRight',
+          });
+          this.getTableData();
+        })
+        .catch((err) => {
+          notification.info({
+            message: '提示',
+            description: err.message,
+            placement: 'topRight',
+          });
+        });
+    },
+    async getMenuOptions() {
+      const res = await reqMenusAll({ button: 0 });
+      if (res.code === 200 && res.data) {
+        this.menuOptions = formatAllMenuListToTree(res.data || []);
+      }
     },
   },
 });

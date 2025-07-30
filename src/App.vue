@@ -1,5 +1,5 @@
 <template>
-  <a-config-provider :getPopupContainer="getPopupContainer" :locale="zhCN">
+  <a-config-provider :getPopupContainer="getPopupContainer">
     <ThemeProvider is-root v-bind="themeConfig" :apply-style="false">
       <stepin-view
         system-name="FICC 数智平台"

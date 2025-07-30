@@ -1,7 +1,7 @@
 <template>
   <arco-modal
     v-model:visible="isShowRoleAndUserListModal"
-    :title="selectRow.name + ' - 菜单已授权角色及用户'"
+    :title="selectRow?.name + ' - 菜单已授权角色及用户'"
     width="50%"
     :footer="false"
     @cancel="handleCancel"

@@ -2,6 +2,7 @@ import { RadioGroupProps } from 'ant-design-vue';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useThemeStore } from 'stepin/es/theme-provider';
+import { generate, getRgbStr } from '@arco-design/color';
 
 export type Navigation = 'side' | 'head' | 'mix';
 export const navigationOptions: RadioGroupProps['options'] = [
@@ -21,7 +22,16 @@ export const useSettingStore = defineStore('setting', () => {
   const { setPrimaryColor, setBgSeriesColors, setTextSeriesColors } = useThemeStore();
 
   const primaryColorChange = (color: string) => {
+    // 修改ant主题色
     setPrimaryColor({ DEFAULT: color });
+    // 修改arco-design主题色
+    const root = document.body;
+    // 完整色阶
+    const colorList = generate(color, { list: true, dark: isDark.value });
+    colorList.forEach((item, index) => {
+      // root.style.setProperty(`--arcoblue-6`, '255,255,255'); // 主蓝色--arcoblue-6
+      root.style.setProperty(`--primary-${index + 1}`, getRgbStr(item));
+    });
   };
 
   function setNavigation(nav: Navigation) {

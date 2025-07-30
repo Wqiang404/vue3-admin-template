@@ -11,12 +11,7 @@ declare interface _AxiosExtend {
    * @param params 请求参数
    * @param config 请求配置
    */
-  request<T = any, R = AxiosResponse<T>>(
-    url: string,
-    method: Method,
-    params?: Record<string | number, any>,
-    config?: AxiosRequestConfig
-  ): Promise<R>;
+  request<T = any, R = AxiosResponse<T>>(url: string, method: Method, params?: Record<string | number, any>, config?: AxiosRequestConfig): Promise<R>;
   /**
    * 设置token
    * @param value token值
@@ -84,12 +79,7 @@ function createAxiosHttp(config: AxiosRequestConfig): AxiosHttp {
   const _axios = axios.create(config);
   return {
     ..._axios,
-    request<T = any, R = AxiosResponse<T>>(
-      url: string,
-      method: Method,
-      params?: Record<string | number, any>,
-      config?: AxiosRequestConfig
-    ): Promise<R> {
+    request<T = any, R = AxiosResponse<T>>(url: string, method: Method, params?: Record<string | number, any>, config?: AxiosRequestConfig): Promise<R> {
       const _method = method.toUpperCase();
       switch (_method) {
         case 'GET':
@@ -109,13 +99,13 @@ function createAxiosHttp(config: AxiosRequestConfig): AxiosHttp {
         case 'PUT_JSON':
           return _axios.put(url, params, config);
         case 'DELETE':
-          return _axios.delete(url, { data: toFormData(params), ...config });
+          return _axios.delete(url, { data: params, ...config });
         case 'HEAD':
           return _axios.head(url, { params, ...config });
         case 'OPTIONS':
           return _axios.options(url, { params, ...config });
         case 'PATCH':
-          return _axios.patch(url, { params, ...config });
+          return _axios.patch(url, { ...params, ...config });
         case 'PURGE':
         case 'LINK':
         case 'UNLINK':

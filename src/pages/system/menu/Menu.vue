@@ -9,7 +9,7 @@
             <a-button type="primary" @click="toggleExpanded">
               {{ expandedKeys?.length ? '收起全部' : '展开全部' }}
             </a-button>
-            <a-button type="primary">新增菜单</a-button>
+            <a-button type="primary" @click="showAddModal()">新增菜单</a-button>
           </div>
           <div class="h-[630px] overflow-scroll">
             <arco-tree
@@ -38,9 +38,11 @@
         <arco-col :span="20">
           <arco-table :columns="columns" :data="data" :pagination="false" :loading="loading" :scroll="{ maxHeight: '720px' }">
             <template #optional="{ record }">
-              <a-button class="mr-1" type="primary" ghost @click="showRoleAndUserListModal(record)"> view </a-button>
-              <a-button class="mr-1" type="primary" ghost @click="$modal.info({ title: 'Name', content: record.name })"> edit </a-button>
-              <a-button class="mr-1" danger @click="$modal.info({ title: 'Name', content: record.name })"> delete </a-button>
+              <arco-button class="mr-1" type="primary" @click="showRoleAndUserListModal(record)"> view </arco-button>
+              <arco-button class="mr-1" type="primary" @click="showEditModal(record)"> edit </arco-button>
+              <a-popconfirm title="删除菜单时会同时删除相关赋权记录，是否确定删除?" @confirm="removeEvent(record)">
+                <arco-button class="mr-1" type="outline" status="danger"> delete </arco-button>
+              </a-popconfirm>
             </template>
           </arco-table>
         </arco-col>
@@ -48,19 +50,21 @@
     </a-card>
 
     <RoleAndUserListModal />
+    <EditFormModal />
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { computed, reactive, ref, h, onMounted } from 'vue';
+  import { computed, reactive, ref, h, onMounted, resolveComponent } from 'vue';
   import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
   import { getIconMap } from '@/utils/helpers';
   import { formatMenuListToTree } from '@/utils/formatter';
-  import { useMenuRebuildStore, storeToRefs } from '@/store';
+  import { useMenuRebuildStore, storeToRefs, initFormState } from '@/store';
   import RoleAndUserListModal from './RoleAndUserListModal.vue';
+  import EditFormModal from './EditFormModal.vue';
 
-  const { getTableData, viewEvent } = useMenuRebuildStore();
-  const { loading, formFilter, tableData, selectedTreeNode, isShowRoleAndUserListModal } = storeToRefs(useMenuRebuildStore());
+  const { getTableData, viewEvent, removeEvent, getMenuOptions } = useMenuRebuildStore();
+  const { loading, formFilter, tableData, selectedTreeNode, isShowRoleAndUserListModal, isShowEditFormModal, editType, selectRow, formState } = storeToRefs(useMenuRebuildStore());
   const menuTypeMap = ['全部', '目录', '菜单', '操作'];
 
   const data = computed(() => {
@@ -184,6 +188,22 @@
     isShowRoleAndUserListModal.value = true;
     viewEvent(record);
   };
+  const showAddModal = () => {
+    editType.value = 'add';
+    isShowEditFormModal.value = true;
+    // 表单重置
+    selectRow.value = null;
+    formState.value = { ...initFormState };
+    getMenuOptions();
+  };
+  const showEditModal = (record) => {
+    // this.$message.success(record.name)
+    editType.value = 'edit';
+    isShowEditFormModal.value = true;
+    selectRow.value = { ...record };
+    formState.value = { ...record };
+    getMenuOptions();
+  };
   const getMenuName = () => {
     const current = tableData.value.find((item) => item.id === selectedTreeNode.value[0]);
     return current?.name || '';
@@ -203,7 +223,9 @@
       align: 'center',
       render: ({ record, column, rowIndex }) => {
         const IconComponent = getIconMap().get('apps');
-        return h(IconComponent, { class: 'text-[18px] mx-[4px]' });
+        // icon大写开头的是组件库的图标，否则是数据库里老的 以 fa 开头的图标，用默认apps图标展示
+        const iconName = record.icon && /^[A-Z]/.test(record.icon) ? resolveComponent(record.icon) : IconComponent;
+        return h(iconName, { class: 'text-[18px] mx-[4px] w-full' });
       },
     },
     {

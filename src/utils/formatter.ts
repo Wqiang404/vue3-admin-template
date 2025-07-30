@@ -29,13 +29,9 @@ export function formatThousand(value: number, fixed: number = 0): string {
 // 四舍五入金额，每隔3位逗号分隔，默认2位小数, 千分位格式化, nan,NaN值填充,自定义缩小倍率
 export function formatAmountFillna({ cellValue }, digits = 2, fillVal = '-', shrink = null) {
   if (!isNull(shrink) && isNumber(shrink)) {
-    return ['nan', 'NaN', 'inf', 'INF', '-', undefined, null].includes(cellValue)
-      ? fillVal
-      : formatThousand(Number(cellValue) / shrink, digits);
+    return ['nan', 'NaN', 'inf', 'INF', '-', undefined, null].includes(cellValue) ? fillVal : formatThousand(Number(cellValue) / shrink, digits);
   } else {
-    return ['nan', 'NaN', 'inf', 'INF', '-', undefined, null].includes(cellValue)
-      ? fillVal
-      : formatThousand(Number(cellValue), digits);
+    return ['nan', 'NaN', 'inf', 'INF', '-', undefined, null].includes(cellValue) ? fillVal : formatThousand(Number(cellValue), digits);
   }
 }
 
@@ -68,4 +64,18 @@ export function formatMenuListToTree(arr) {
   }
   genChild(treeList);
   return treeList;
+}
+
+export function formatAllMenuListToTree(arr) {
+  const list = deepClone(arr);
+  const treeList = list.filter((listItem) => !listItem.parent_id);
+  treeList.sort((a, b) => a.sequence - b.sequence);
+  const treeParentList = treeList.map((item) => ({ label: item.name, value: item.id }));
+  treeParentList.forEach((item) => {
+    item.children = list
+      .filter((listItem) => listItem.parent_id === item.value)
+      .sort((a, b) => a.sequence - b.sequence)
+      .map((childItem) => ({ label: childItem.name, value: childItem.id }));
+  });
+  return treeParentList;
 }
