@@ -18,7 +18,7 @@
               v-model:selected-keys="selectedTreeNode"
               :show-line="true"
               :size="'large'"
-              draggable
+              :draggable="false"
               @select="onTreeSelect"
               @drop="onDrop"
             >
