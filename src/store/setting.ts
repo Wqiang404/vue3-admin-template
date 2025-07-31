@@ -14,6 +14,7 @@ export const navigationOptions: RadioGroupProps['options'] = [
 export const useSettingStore = defineStore('setting', () => {
   const navigation = ref<Navigation>('head');
   const useTabs = ref<boolean>(true);
+  const useCursor = ref<boolean>(true);
   const isDark = ref<boolean>(true);
   const theme = ref('header-dark');
   const contentClass = ref('common');
@@ -52,6 +53,7 @@ export const useSettingStore = defineStore('setting', () => {
   return {
     navigation,
     useTabs,
+    useCursor,
     theme,
     isDark,
     contentClass,

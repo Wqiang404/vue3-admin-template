@@ -30,6 +30,7 @@
   </a-config-provider>
   <login-modal :unless="['/login']" />
   <SplashCursor
+    v-if="useCursor"
     :SIM_RESOLUTION="128"
     :DYE_RESOLUTION="1440"
     :CAPTURE_RESOLUTION="512"
@@ -81,7 +82,7 @@
 
   // useMenuStore().getMenuList();
 
-  const { navigation, useTabs, theme, contentClass } = storeToRefs(useSettingStore());
+  const { navigation, useTabs, useCursor, theme, contentClass } = storeToRefs(useSettingStore());
   const themeConfig = computed(() => themeList.find((item) => item.key === theme.value)?.config ?? {});
 
   const user = reactive({

@@ -1,6 +1,25 @@
 import { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
+  {
+    path: '/home',
+    name: '首页',
+    meta: {
+      // view: 'blank',
+      renderMenu: true,
+    },
+    component: () => import('@/pages/home'),
+  },
+  {
+    path: '/',
+    name: 'home',
+    redirect: '/login',
+    meta: {
+      title: '首页',
+      renderMenu: false,
+      icon: 'CreditCardOutlined',
+    },
+  },
   // {
   //   path: '/demo',
   //   name: '示范页面',
@@ -48,25 +67,6 @@ const routes: RouteRecordRaw[] = [
       renderMenu: false,
     },
     component: () => import('@/pages/login'),
-  },
-  {
-    path: '/',
-    name: 'home',
-    redirect: '/login',
-    meta: {
-      title: '首页',
-      renderMenu: false,
-      icon: 'CreditCardOutlined',
-    },
-  },
-  {
-    path: '/home',
-    name: '首页',
-    meta: {
-      view: 'blank',
-      renderMenu: false,
-    },
-    component: () => import('@/pages/home'),
   },
   {
     path: '/system',

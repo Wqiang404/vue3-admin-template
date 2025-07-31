@@ -3,7 +3,7 @@
   import { ref, watch } from 'vue';
   import { configTheme, themeList } from '@/theme';
 
-  const { navigation, useTabs, theme } = storeToRefs(useSettingStore());
+  const { navigation, useTabs, useCursor, theme } = storeToRefs(useSettingStore());
   const { setTheme } = useSettingStore();
   const { primaryColorValue, primaryColorChange } = useSettingStore();
   const emit = defineEmits<{
@@ -26,14 +26,7 @@
 </script>
 <template>
   <div>
-    <a-drawer
-      :width="400"
-      title="主题编辑器"
-      :closable="false"
-      :placement="'right'"
-      v-model:visible="visible"
-      @close="$emit('close')"
-    >
+    <a-drawer :width="400" title="主题编辑器" :closable="false" :placement="'right'" v-model:visible="visible" @close="$emit('close')">
       <template #extra>
         <a-button style="margin-right: 8px" @click="$emit('close')">重置</a-button>
         <a-button type="primary" @click="$emit('close')">保存</a-button>
@@ -50,6 +43,10 @@
         <span>多页签</span>
         <a-switch v-model:checked="useTabs" />
       </div>
+      <div class="config-item">
+        <span>鼠标光标动效</span>
+        <a-switch v-model:checked="useCursor" />
+      </div>
 
       <a-divider />
 
@@ -58,19 +55,10 @@
           <span>预设主题</span>
         </div>
         <div class="flex flex-row flex-wrap">
-          <div
-            class="img-checkbox relative"
-            v-for="themeItem in themeList"
-            :key="themeItem.key"
-            @click="() => themeChange(themeItem.key)"
-          >
+          <div class="img-checkbox relative" v-for="themeItem in themeList" :key="themeItem.key" @click="() => themeChange(themeItem.key)">
             <a-tooltip :title="themeItem.title">
               <img width="96" class="img-checkbox-img" :src="themeItem.imgUrl" />
-              <CheckOutlined
-                class="img-checkbox-icon"
-                style="color: var(--color-primary-6)"
-                v-show="themeItem.key === theme"
-              />
+              <CheckOutlined class="img-checkbox-icon" style="color: var(--color-primary-6)" v-show="themeItem.key === theme" />
             </a-tooltip>
           </div>
         </div>
@@ -91,16 +79,16 @@
     --tw-translate-y: -2px;
     --tw-scale-x: 1.05;
     --tw-scale-y: 1.05;
-    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x))
-      skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x))
+      scaleY(var(--tw-scale-y));
   }
   .img-checkbox-icon {
     position: absolute;
     bottom: 50%;
     left: 50%;
     --tw-translate-y: 50%;
-    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x))
-      skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x))
+      scaleY(var(--tw-scale-y));
     font-size: var(--font-size-xxl);
     line-height: var(--leading);
     color: var(--color-primary-6);
